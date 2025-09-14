@@ -4,7 +4,7 @@ import { Column } from "primereact/column";
 import { Button } from "primereact/button";
 import { OverlayPanel } from "primereact/overlaypanel";
 
-interface Artwork {
+interface At {
   id: number;
   title: string;
   place_of_origin: string;
@@ -15,11 +15,11 @@ interface Artwork {
 }
 
 export default function App() {
-  const [data, setData] = useState<Artwork[]>([]);
+  const [data, setData] = useState<At[]>([]);
   const [loading, setLoading] = useState(true);
   const [totalRecords, setTotalRecords] = useState(0);
   const [lazyParams, setLazyParams] = useState({ first: 0, rows: 12 });
-  const [selectedRows, setSelectedRows] = useState<Artwork[]>([]);
+  const [selectedRows, setSelectedRows] = useState<At[]>([]);
   const [rowCount, setRowCount] = useState<number>();
 
   const overlayRef = useRef<OverlayPanel>(null);
@@ -47,7 +47,7 @@ export default function App() {
   const handleAutoSelect = async () => {
     if (!rowCount) return;
 
-    let selected: Artwork[] = [];
+    let selected: At[] = [];
 
     if (rowCount <= data.length) {
       selected = data.slice(0, rowCount);
@@ -61,7 +61,7 @@ export default function App() {
           `https://api.artic.edu/api/v1/artworks?page=${nextPage}&limit=${lazyParams.rows}`
         );
         const result = await res.json();
-        const pageData: Artwork[] = result.data;
+        const pageData: At[] = result.data;
 
         if (remaining <= pageData.length) {
           selected = [...selected, ...pageData.slice(0, remaining)];
@@ -105,29 +105,6 @@ export default function App() {
 
   return (
     <div style={{ padding: "16px" }}>
-      {/* <DataTable
-        value={data}
-        paginator
-        rows={lazyParams.rows}
-        totalRecords={totalRecords}
-        lazy
-        loading={loading}
-        first={lazyParams.first}
-        onPage={(e) => setLazyParams(e)}
-        selection={selectedRows}
-        onSelectionChange={handleManualSelection}
-        dataKey="id"
-    
-      >
-        <Column selectionMode="multiple" headerStyle={{ width: "3rem" }} />
-        <Column field="title" header={titleHeaderTemplate} />
-        <Column field="place_of_origin" header="Origin" />
-        <Column field="artist_display" header="Artist" />
-        <Column field="inscriptions" header="Inscriptions" />
-        <Column field="date_start" header="Start Date" />
-        <Column field="date_end" header="End Date" />
-      </DataTable> */}
-
       <DataTable
         value={data}
         paginator
@@ -140,7 +117,7 @@ export default function App() {
         selection={selectedRows}
         onSelectionChange={handleManualSelection}
         dataKey="id"
-        selectionMode="multiple" // ✅ Add this line
+        selectionMode="multiple" 
       >
         <Column selectionMode="multiple" headerStyle={{ width: "3rem" }} />
         <Column field="title" header={titleHeaderTemplate} />
